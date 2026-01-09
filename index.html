@@ -2,237 +2,254 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J.A.R.V.I.S - ULTIMATE API FIX</title>
-    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;500;700&family=Rajdhani:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NECXY | OMEGA STEALTH V15</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #ff2a2a; 
-            --dark: #000000;
-            --glass: rgba(255, 42, 42, 0.08); 
-            --text: #ffffff;
-            --border: rgba(255, 42, 42, 0.4);
-            --glow: 0 0 15px var(--primary);
+        :root { --red: #FF003C; --glass: rgba(10, 10, 10, 0.9); }
+        body { 
+            background: #000; color: white; font-family: 'Outfit', sans-serif; 
+            min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; 
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-
-        body {
-            background-color: var(--dark);
-            color: var(--text);
-            font-family: 'Rajdhani', sans-serif;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-image: radial-gradient(circle at 50% 50%, #1a0000 0%, #000000 80%);
-            overflow: hidden;
-        }
-
-        /* --- CORE STYLES (Retained) --- */
-        .core-container {
-            position: relative; width: 250px; height: 250px;
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; transition: 0.3s; margin-bottom: 30px;
-        }
-        .core-container:active { transform: scale(0.95); }
-        .arc-ring { position: absolute; border-radius: 50%; border: 2px solid var(--border); }
-        .r1 { width: 100%; height: 100%; border: 3px dashed var(--border); animation: spin-left 15s linear infinite; }
-        .r2 { width: 80%; height: 80%; border-top: 5px solid var(--primary); border-bottom: 5px solid var(--primary); animation: spin-right 8s linear infinite; }
-        .r3 { width: 60%; height: 60%; background: var(--dark); box-shadow: 0 0 50px var(--primary); }
-        .core-center { width: 80px; height: 80px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 40px var(--primary); transition: 0.3s; }
-        .core-container.active .core-center { background: white; animation: pulse 1s infinite alternate; }
-        .core-container.active .arc-ring { border-color: white; }
-
-        @keyframes spin-right { 100% { transform: rotate(360deg); } }
-        @keyframes spin-left { 100% { transform: rotate(-360deg); } }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 0.9; } 100% { transform: scale(1.2); opacity: 1; } }
-
-        /* --- CONSOLE LOG --- */
-        .console {
-            width: 90%; max-width: 550px; height: 150px;
-            background: var(--glass); backdrop-filter: blur(5px);
-            border: 1px solid var(--border); border-radius: 10px;
-            padding: 15px; overflow-y: auto; font-family: 'Share Tech Mono', monospace;
-            font-size: 0.9rem; box-shadow: 0 0 10px rgba(255, 42, 42, 0.1);
-            position: absolute; bottom: 20px;
-        }
-
-        .log-line { line-height: 1.4; margin-bottom: 5px; }
-        .log-line.user { color: var(--primary); }
-        .log-line.jarvis { color: var(--text); }
+        .header-font { font-family: 'Space Grotesk', sans-serif; }
         
-        /* --- STATUS DISPLAY --- */
-        .status-display {
-            font-family: 'Teko', sans-serif; font-size: 2.5rem; letter-spacing: 5px;
-            text-shadow: 0 0 10px var(--primary);
+        /* Ultra Glassmorphism V4 */
+        .glass { 
+            background: var(--glass); backdrop-filter: blur(50px); 
+            -webkit-backdrop-filter: blur(50px); border: 1px solid rgba(255, 255, 255, 0.05); 
         }
+        .red-neon { color: var(--red); text-shadow: 0 0 20px rgba(255, 0, 60, 0.8); }
+        .bg-red { background: var(--red); box-shadow: 0 0 40px rgba(255, 0, 60, 0.5); }
+        
+        .card-elite { border-left: 5px solid var(--red); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .card-elite:hover { background: rgba(255, 0, 60, 0.08); transform: scale(1.02); }
+
+        #history-panel { transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1); }
+        .drawer-hide { transform: translateX(100%); opacity: 0; }
+
+        @keyframes scan { 0% { top: -100%; } 100% { top: 200%; } }
+        .scanner { position: absolute; width: 100%; height: 4px; background: var(--red); opacity: 0.15; filter: blur(8px); animation: scan 4s linear infinite; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body>
+<body class="bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-900 via-black to-black">
 
-    <div class="status-display" id="status">सिस्टम बूटिंग...</div>
+    <nav class="p-6 mx-4 mt-4 glass rounded-[35px] flex justify-between items-center sticky top-4 z-50 border-white/5 shadow-2xl">
+        <div class="flex flex-col">
+            <h1 class="header-font text-2xl font-bold tracking-tighter uppercase italic leading-none">NECXY<span class="red-neon">NODE</span></h1>
+            <span class="text-[8px] font-bold uppercase tracking-[5px] text-zinc-600 mt-1">Anti-Detection Node v15.0</span>
+        </div>
+        <div class="flex gap-2">
+            <button onclick="toggleHistory()" class="w-12 h-12 glass rounded-2xl flex items-center justify-center text-xl hover:text-red-600 transition-all">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </button>
+            <button onclick="location.reload()" class="w-12 h-12 glass rounded-2xl flex items-center justify-center text-xl hover:text-red-600 transition-all">
+                <i class="fa-solid fa-power-off"></i>
+            </button>
+        </div>
+    </nav>
 
-    <div class="core-container" id="mic-btn" onclick="jarvis.toggle()">
-        <div class="arc-ring r1"></div>
-        <div class="arc-ring r2"></div>
-        <div class="arc-ring r3"></div>
-        <div class="core-center"></div>
+    <main class="flex-grow px-4 mt-12 max-w-4xl mx-auto w-full">
+        <div class="glass p-12 rounded-[60px] text-center relative overflow-hidden mb-10 shadow-[0_0_60px_rgba(255,0,60,0.05)] border-red/10">
+            <div class="scanner"></div>
+            <p class="text-[10px] font-black uppercase tracking-[8px] text-zinc-500 mb-8">Generated Social Identity</p>
+            <div class="flex flex-col items-center gap-10">
+                <h2 id="email-addr" class="text-xl md:text-4xl font-black tracking-tighter text-white break-all italic uppercase drop-shadow-2xl">SECURE_LINKING...</h2>
+                <div class="flex gap-4">
+                    <button onclick="copyMail()" class="w-16 h-16 glass rounded-2xl flex items-center justify-center text-xl hover:bg-white/10 active:scale-90 transition-all"><i class="fa-solid fa-copy"></i></button>
+                    <button id="gen-btn" onclick="initNewIdentity()" class="bg-red px-12 py-5 rounded-[28px] font-black uppercase text-xs tracking-[5px] text-white active:scale-95 transition-all shadow-2xl">GENERATE NODE</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-32">
+            <div class="flex justify-between items-center px-6 mb-8">
+                <h3 class="header-font text-xs font-bold uppercase tracking-[6px] text-zinc-500 italic">Traffic_Inflow</h3>
+                <div class="flex items-center gap-4">
+                    <span id="msg-count" class="text-[9px] font-black glass px-4 py-2 rounded-xl text-red-600">0 MESSAGES</span>
+                    <button onclick="syncInbox()" class="text-xs text-zinc-500 hover:text-white"><i id="sync-icon" class="fa-solid fa-sync"></i></button>
+                </div>
+            </div>
+            <div id="inbox-container" class="space-y-4">
+                <div class="glass p-24 rounded-[55px] text-center border-dashed border-white/5 opacity-20">
+                    <i class="fa-solid fa-user-ninja text-6xl mb-6"></i>
+                    <p class="text-[10px] font-bold uppercase tracking-[6px]">Awaiting Decryption Signals...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="history-panel" class="fixed inset-y-0 right-0 w-full max-w-sm glass z-[200] border-l border-white/10 drawer-hide flex flex-col shadow-2xl">
+        <div class="p-10 border-b border-white/5 flex justify-between items-center bg-black">
+            <h3 class="header-font font-bold uppercase tracking-[5px] text-sm text-red-600">History_Logs</h3>
+            <button onclick="toggleHistory()" class="text-xl text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="history-list" class="flex-grow overflow-y-auto p-8 space-y-4 no-scrollbar"></div>
+        <div class="p-8 border-t border-white/5">
+            <button onclick="clearHistory()" class="w-full py-5 glass rounded-2xl text-[10px] font-black uppercase tracking-widest text-red-600 hover:bg-red-600 hover:text-white transition-all">Purge Logs</button>
+        </div>
     </div>
 
-    <div class="console" id="log-screen">
-        <div class="log-line jarvis">Jarvis Console: API कनेक्टिविटी और वॉइस मॉड्यूल की जाँच हो रही है।</div>
+    <div id="reader" class="fixed inset-0 z-[220] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/98 backdrop-blur-3xl" onclick="closeReader()"></div>
+        <div class="glass w-full max-w-4xl rounded-[60px] relative z-10 flex flex-col border-white/10 shadow-2xl overflow-hidden max-h-[85vh]">
+            <div class="p-10 border-b border-white/5 flex justify-between items-center bg-black/40">
+                <div class="overflow-hidden">
+                    <p id="m-from" class="text-red-600 text-[10px] font-black uppercase tracking-widest mb-2"></p>
+                    <h2 id="m-sub" class="text-white font-black uppercase text-xl italic truncate pr-10"></h2>
+                </div>
+                <button onclick="closeReader()" class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-white hover:bg-red-600 transition-all"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="m-body" class="p-10 overflow-y-auto no-scrollbar text-base text-zinc-400 bg-transparent"></div>
+        </div>
     </div>
 
-<script>
-    // --- API KEY (Fixed) ---
-    const API_KEY = "AIzaSyAzINqsAHdMMLiXpLCwet0O540MB5xX5qg"; 
-    const MODEL_NAME = "gemini-1.5-flash"; // UPGRADED MODEL
+    <footer class="py-12 border-t border-white/5 text-center mt-auto bg-black">
+        <p class="header-font text-[10px] tracking-[20px] text-zinc-800 italic">NECXY DEVELOPER</p>
+    </footer>
 
-    const jarvis = {
-        recognition: null,
-        isListening: false,
-        
-        init: () => {
-            if ('webkitSpeechRecognition' in window) {
-                jarvis.recognition = new webkitSpeechRecognition();
-                jarvis.recognition.continuous = false;
-                jarvis.recognition.lang = 'hi-IN'; 
-                jarvis.recognition.interimResults = false;
+    <script>
+        const API = "https://api.mail.gw";
+        const PROXY = "https://api.allorigins.win/raw?url=";
+        let authToken = "";
+        let activeEmail = "";
 
-                jarvis.recognition.onstart = () => {
-                    jarvis.isListening = true;
-                    jarvis.updateUI("सुन रहा हूँ...", true);
-                };
-
-                jarvis.recognition.onend = () => {
-                    jarvis.isListening = false;
-                    if(!window.speechSynthesis.speaking) jarvis.updateUI("तैयार हूँ", false);
-                };
-
-                jarvis.recognition.onresult = (event) => {
-                    const text = event.results[0][0].transcript;
-                    jarvis.logCommand(text);
-                    jarvis.updateUI("सोच रहा हूँ...", true);
-                    jarvis.processCommand(text);
-                };
-            } else {
-                jarvis.logResponse("Error: यह ब्राउज़र वॉयस सपोर्ट नहीं करता। कृपया Chrome का उपयोग करें।");
-                jarvis.updateUI("त्रुटि", false);
-            }
-            // Pre-load voices for quick speak
-            window.speechSynthesis.getVoices();
-            jarvis.speak("नमस्कार सर, मैं जार्विस हूँ। अब एपीआई एकदम स्थिर है।");
-        },
-
-        toggle: () => {
-            if (window.speechSynthesis.speaking) {
-                window.speechSynthesis.cancel();
-                jarvis.updateUI("रोका गया", false);
-                return;
-            }
-            if (jarvis.isListening) jarvis.recognition.stop();
-            else try { jarvis.recognition.start(); } catch(e) {}
-        },
-
-        updateUI: (status, active) => {
-            document.getElementById('status').innerText = status;
-            const btn = document.getElementById('mic-btn');
-            if(active) btn.classList.add('active');
-            else btn.classList.remove('active');
-        },
-        
-        logCommand: (cmd) => {
-            const logScreen = document.getElementById('log-screen');
-            logScreen.innerHTML += `<div class="log-line user">आप: ${cmd}</div>`;
-            logScreen.scrollTop = logScreen.scrollHeight;
-        },
-        
-        logResponse: (text) => {
-            const logScreen = document.getElementById('log-screen');
-            logScreen.innerHTML += `<div class="log-line jarvis">Jarvis: ${text}</div>`;
-            logScreen.scrollTop = logScreen.scrollHeight;
-        },
-
-        speak: (text) => {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'hi-IN';
+        async function secureRequest(path, method = 'GET', body = null) {
+            const options = {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(authToken && { 'Authorization': `Bearer ${authToken}` })
+                }
+            };
+            if (body) options.body = JSON.stringify(body);
             
-            const voices = window.speechSynthesis.getVoices();
-            let maleHindiVoice = voices.find(v => v.lang.startsWith('hi') && (v.name.includes('Male') || v.name.includes('Google') || v.name.includes('Hindi')));
-            
-            if (!maleHindiVoice) maleHindiVoice = voices.find(v => v.lang.startsWith('hi'));
-            if(maleHindiVoice) utterance.voice = maleHindiVoice;
-            
-            utterance.rate = 0.9; 
-            utterance.pitch = 0.85;
+            const response = await fetch(PROXY + encodeURIComponent(API + path), options);
+            if (!response.ok) throw new Error("Connection Denied");
+            return response.json();
+        }
 
-            jarvis.updateUI("बोल रहा हूँ...", true);
-            
-            utterance.onend = () => jarvis.updateUI("तैयार हूँ", false);
-            window.speechSynthesis.speak(utterance);
-            jarvis.logResponse(text);
-        },
+        async function initNewIdentity() {
+            const btn = document.getElementById('gen-btn');
+            const el = document.getElementById('email-addr');
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> BYPASSING...';
+            el.innerText = "ROTATING NODES...";
 
-        processCommand: async (cmd) => {
-            const command = cmd.toLowerCase();
-
-            // Local Commands (Fast Response)
-            if (command.includes("समय बताओ") || command.includes("time kya hai")) {
-                const time = new Date().toLocaleTimeString('hi-IN', { hour: 'numeric', minute: 'numeric', hour12: true });
-                jarvis.speak(`अभी ${time} हुआ है सर।`);
-            } 
-            else if (command.includes("गूगल खोलो") || command.includes("google search")) {
-                jarvis.speak("आपके लिए गूगल खोल रहा हूँ सर।");
-                window.open("https://google.com", "_blank");
-            }
-            else {
-                // Send to Gemini AI for Stable Response
-                await jarvis.askGemini(cmd);
-            }
-        },
-
-        askGemini: async (prompt) => {
             try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        contents: [{ 
-                            parts: [{ 
-                                text: `You are JARVIS. Reply only in short HINDI language (max 2 sentences). User asks: ${prompt}`
-                            }] 
-                        }]
-                    })
-                });
+                const domains = await secureRequest('/domains');
+                const domain = domains['hydra:member'][0].domain;
+                const user = `${Math.random().toString(36).substring(7)}@${domain}`;
+                const pass = "Necxy999!";
 
-                const data = await response.json();
+                await secureRequest('/accounts', 'POST', { address: user, password: pass });
+                const auth = await secureRequest('/token', 'POST', { address: user, password: pass });
                 
-                // Check for API/Request Errors first
-                if (data.error) {
-                    jarvis.speak("माफ़ कीजिये सर, एपीआई सर्वर पर बड़ी त्रुटि आई है। कृपया कुंजी (Key) की जाँच करें।");
-                    return;
-                }
-                
-                // Check if candidate exists
-                if (data.candidates && data.candidates.length > 0) {
-                    const reply = data.candidates[0].content.parts[0].text;
-                    const cleanReply = reply.replace(/[*#`]/g, '');
-                    jarvis.speak(cleanReply);
-                } else {
-                    jarvis.speak("माफ़ कीजिये सर, मैं आपके सवाल का जवाब नहीं दे पाया।");
-                }
+                authToken = auth.token;
+                activeEmail = user;
+                el.innerText = activeEmail;
 
-            } catch (error) {
-                jarvis.speak("सर, नेटवर्क या एपीआई में कोई गंभीर समस्या है।");
-                jarvis.updateUI("नेटवर्क एरर", false);
+                // Save to History
+                let history = JSON.parse(localStorage.getItem('ghost_history') || '[]');
+                history.unshift({ email: activeEmail, token: authToken, time: new Date().toLocaleTimeString() });
+                localStorage.setItem('ghost_history', JSON.stringify(history.slice(0, 10)));
+                
+                syncInbox();
+            } catch (err) {
+                el.innerText = "SERVER_RETRY...";
+                setTimeout(initNewIdentity, 2000);
+            } finally {
+                btn.innerHTML = "GENERATE NODE";
             }
         }
-    };
 
-    window.onload = jarvis.init;
-</script>
+        async function syncInbox() {
+            if (!authToken) return;
+            const icon = document.getElementById('sync-icon');
+            icon.classList.add('fa-spin');
+            try {
+                const data = await secureRequest('/messages');
+                const msgs = data['hydra:member'];
+                document.getElementById('msg-count').innerText = `${msgs.length} MESSAGES`;
+                renderInbox(msgs);
+            } catch (e) { console.error("Sync Error"); }
+            finally { setTimeout(() => icon.classList.remove('fa-spin'), 1000); }
+        }
+
+        function renderInbox(msgs) {
+            const container = document.getElementById('inbox-container');
+            if (msgs.length === 0) return;
+            container.innerHTML = msgs.map(m => `
+                <div onclick="readMail('${m.id}')" class="glass card-elite p-8 rounded-[40px] border-white/5 flex justify-between items-center cursor-pointer active:scale-95">
+                    <div class="overflow-hidden pr-6">
+                        <span class="text-[9px] font-black text-red-600 uppercase tracking-widest mb-1 block">${m.from.address}</span>
+                        <h4 class="text-md font-bold text-white truncate uppercase italic tracking-tighter">${m.subject || 'Instagram OTP'}</h4>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-zinc-800"></i>
+                </div>
+            `).join('');
+        }
+
+        async function readMail(id) {
+            try {
+                const data = await secureRequest(`/messages/${id}`);
+                document.getElementById('m-from').innerText = "SOURCE: " + data.from.address;
+                document.getElementById('m-sub').innerText = data.subject || "SECURED_SIGNAL";
+                document.getElementById('m-body').innerHTML = data.html || `<pre class="whitespace-pre-wrap">${data.text}</pre>`;
+                document.getElementById('reader').classList.remove('hidden');
+                document.getElementById('reader').classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            } catch (e) { alert("Decryption Error"); }
+        }
+
+        function toggleHistory() {
+            const panel = document.getElementById('history-panel');
+            panel.classList.toggle('drawer-hide');
+            if (!panel.classList.contains('drawer-hide')) {
+                const list = document.getElementById('history-list');
+                const history = JSON.parse(localStorage.getItem('ghost_history') || '[]');
+                if (history.length === 0) {
+                    list.innerHTML = `<p class="text-center text-zinc-800 font-bold uppercase text-[10px] mt-20">No Logs Found</p>`;
+                    return;
+                }
+                list.innerHTML = history.map((h, i) => `
+                    <div onclick="restoreSession(${i})" class="glass p-6 rounded-[30px] border-white/5 cursor-pointer hover:border-red-600/40 transition-all">
+                        <p class="text-white font-bold text-xs truncate">${h.email}</p>
+                        <p class="text-[8px] text-zinc-600 font-black mt-1 uppercase">${h.time} - RESTORE NODE</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function restoreSession(i) {
+            const history = JSON.parse(localStorage.getItem('ghost_history'));
+            const session = history[i];
+            activeEmail = session.email;
+            authToken = session.token;
+            document.getElementById('email-addr').innerText = activeEmail;
+            toggleHistory();
+            syncInbox();
+        }
+
+        function clearHistory() {
+            if (confirm("Purge all logs?")) {
+                localStorage.removeItem('ghost_history');
+                toggleHistory();
+            }
+        }
+
+        function copyMail() {
+            if(!activeEmail) return;
+            navigator.clipboard.writeText(activeEmail);
+            alert("Node Identity Copied!");
+        }
+
+        function closeReader() { document.getElementById('reader').classList.add('hidden'); document.body.style.overflow = 'auto'; }
+
+        window.onload = initNewIdentity;
+        setInterval(syncInbox, 15000);
+    </script>
 </body>
 </html>
